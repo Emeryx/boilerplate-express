@@ -1,7 +1,9 @@
 require('dotenv').config()
+bodyParser = require('body-parser')
 let express = require('express');
 let app = express();
 console.log('Hello World')
+app.use(bodyParser.urlencoded({extended: false}))
 app.use((req, res, next) => { // Middleware function for all routes
     console.log(`${req.method} ${req.path} - ${req.ip}`)
     next()
@@ -23,27 +25,15 @@ app.get('/now', fetchTime, (req, res) => {
 app.get('/:word/echo', (req, res) => {
     res.json({echo: req.params.word})
 })
+app.get('/name', (req, res) => {
+    const firstName = req.query.first
+    const lastName = req.query.last
+    res.json({name: `${firstName} ${lastName}`})
+})
+app.post('/name', (req, res) => {
+    const firstName = req.body.first
+    const lastName = req.body.last
+    res.json({name: `${firstName} ${lastName}`})
+})
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- module.exports = app;
+module.exports = app;
