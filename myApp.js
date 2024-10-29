@@ -13,8 +13,16 @@ app.use('/public', express.static(__dirname + '/public'))
 app.get('/json', (req, res) => {
     res.json({"message": process.env.MESSAGE_STYLE=="uppercase"?"HELLO JSON":"Hello json"})
 })
-
-
+const fetchTime = (req, res, next) => {
+    req.time = new Date().toString()
+    next()
+}
+app.get('/now', fetchTime, (req, res) => {
+    res.json({time: req.time})
+})
+app.get('/:word/echo', (req, res) => {
+    res.json({echo: req.params.word})
+})
 
 
 
